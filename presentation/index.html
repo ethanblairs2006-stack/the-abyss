@@ -3,545 +3,411 @@
 <head>
   <meta charset="utf-8">
   <title>The Abyss — Presentation</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
 
   <style>
-    /* ── Palette ─────────────────────────────────── */
+    /* ── Reset & full bleed ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; }
+
+    /* ── Palette ─── */
     :root {
-      --gold:   #f5c842;
-      --red:    #c42c2c;
-      --stone:  #a89878;
-      --dim:    #6b5e48;
-      --bg:     #0d0b08;
-      --card:   #1a160f;
+      --gold:  #f5c842;
+      --red:   #c42c2c;
+      --stone: #a89878;
+      --dim:   #6b5e48;
+      --bg:    #0d0b08;
+      --card:  #1a160f;
+      --body:  #cfc4ad;
     }
 
-    .reveal { background: var(--bg); font-family: 'Georgia', serif; }
+    /* ── Base ─── */
+    .reveal-viewport { background: var(--bg); }
+    .reveal          { background: var(--bg); font-family: Georgia, serif; }
+    .reveal .slides  { text-align: left; }
+    .reveal .slides section { padding: 0 60px; }
 
-    /* Animated torch-flicker vignette */
-    .reveal::before {
+    /* ── Torch vignette ─── */
+    .reveal::after {
       content: '';
-      position: fixed; inset: 0; pointer-events: none; z-index: 999;
-      background: radial-gradient(ellipse at 50% 50%,
-        transparent 55%, rgba(0,0,0,.72) 100%);
-      animation: flicker 4s ease-in-out infinite alternate;
+      position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+      background: radial-gradient(ellipse 70% 70% at 50% 50%,
+        transparent 40%, rgba(0,0,0,.65) 100%);
+      animation: flicker 5s ease-in-out infinite alternate;
     }
     @keyframes flicker {
-      0%   { opacity: .85; }
-      30%  { opacity: 1;   }
-      60%  { opacity: .90; }
-      100% { opacity: .80; }
+      0%   { opacity:.8; }  40% { opacity:1; }
+      70%  { opacity:.85; } 100%{ opacity:.75; }
     }
 
-    /* ── Section headers ─────────────────────────── */
-    .reveal h1 { color: var(--gold); font-size: 2.6em; text-shadow: 0 0 30px rgba(245,200,66,.5); letter-spacing: .04em; }
-    .reveal h2 { color: var(--gold); font-size: 1.7em; border-bottom: 1px solid var(--dim); padding-bottom: .3em; }
-    .reveal h3 { color: var(--stone); font-size: 1.1em; text-transform: uppercase; letter-spacing: .14em; }
-    .reveal p, .reveal li { color: #cfc4ad; line-height: 1.65; }
-    .reveal strong { color: var(--gold); }
-    .reveal em     { color: #e09060; font-style: normal; }
+    /* ── Typography ─── */
+    .reveal h1 { color: var(--gold); font-size: 2.2em; text-shadow: 0 0 40px rgba(245,200,66,.45); letter-spacing:.04em; line-height:1.1; }
+    .reveal h2 { color: var(--gold); font-size: 1.5em; border-bottom: 2px solid var(--dim); padding-bottom:.25em; margin-bottom:.6em; }
+    .reveal p, .reveal li { color: var(--body); font-size:.88em; line-height:1.7; }
+    .reveal strong { color: var(--gold); font-style:normal; }
+    .reveal em     { color: #e09060; font-style:normal; }
+    .reveal ul     { padding-left:1.2em; }
+    .reveal ul li  { margin-bottom:.35em; }
 
-    /* ── Slide decorations ───────────────────────── */
-    .rune {
-      font-size: 4em; opacity: .08; position: absolute;
-      user-select: none; pointer-events: none;
-    }
+    /* ── Gold rule ─── */
+    .rule { border:none; border-top:1px solid var(--dim); margin:.6em 0; }
 
-    /* ── Cards / columns ─────────────────────────── */
-    .cards { display: flex; gap: 1.2em; justify-content: center; flex-wrap: wrap; }
+    /* ── Cards ─── */
+    .cards { display:flex; gap:1em; margin-top:.6em; }
     .card {
-      background: var(--card); border: 1px solid var(--dim);
-      border-radius: 8px; padding: 1.1em 1.3em; flex: 1; min-width: 180px;
-      box-shadow: 0 4px 20px rgba(0,0,0,.6);
+      flex:1; background:var(--card);
+      border:1px solid var(--dim); border-radius:8px;
+      padding:.9em 1em;
     }
-    .card h3 { margin: 0 0 .5em; font-size: .85em; }
-    .card p  { margin: 0; font-size: .82em; }
+    .card .icon { font-size:1.6em; display:block; margin-bottom:.3em; }
+    .card h3 { color:var(--gold); font-size:.78em; text-transform:uppercase; letter-spacing:.1em; margin-bottom:.35em; }
+    .card p  { font-size:.78em; margin:0; color:var(--body); }
 
-    .icon { font-size: 1.8em; display: block; margin-bottom: .3em; }
+    /* ── Big stat ─── */
+    .big-stat { text-align:center; }
+    .big-stat .num { color:var(--gold); font-size:3.5em; font-weight:bold; display:block; line-height:1; }
+    .big-stat .lbl { color:var(--stone); font-size:.75em; }
 
-    /* ── Timeline ────────────────────────────────── */
-    .timeline { list-style: none; padding: 0; margin: 0; }
-    .timeline li {
-      display: flex; align-items: flex-start; gap: 1em;
-      padding: .6em 0; border-left: 2px solid var(--dim);
-      margin-left: 1em; padding-left: 1.2em; position: relative;
+    /* ── Challenge / Solution ─── */
+    .chal, .sol {
+      border-radius:0 6px 6px 0; padding:.65em 1em; margin-bottom:.4em;
     }
-    .timeline li::before {
-      content: ''; width: 10px; height: 10px; border-radius: 50%;
-      background: var(--gold); position: absolute; left: -6px; top: 12px;
-    }
-    .timeline .label { color: var(--gold); font-weight: bold; min-width: 9em; font-size: .88em; }
-    .timeline .desc  { color: #bfb49a; font-size: .85em; }
-
-    /* ── Stat bar ────────────────────────────────── */
-    .stat-bar { margin: .4em 0; }
-    .stat-bar .label { color: var(--stone); font-size: .8em; display: flex; justify-content: space-between; }
-    .stat-bar .track { background: #2a2218; border-radius: 4px; height: 7px; margin-top: 3px; }
-    .stat-bar .fill  { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--red), var(--gold)); }
-
-    /* ── Code ────────────────────────────────────── */
-    .reveal pre {
-      font-size: .58em; border: 1px solid var(--dim);
-      border-radius: 6px; box-shadow: 0 4px 18px rgba(0,0,0,.7);
-    }
-
-    /* ── Challenge cards ─────────────────────────── */
-    .challenge {
-      background: var(--card); border-left: 4px solid var(--red);
-      border-radius: 0 6px 6px 0; padding: .8em 1em; margin: .5em 0;
-    }
-    .solution {
-      background: #0f1a0f; border-left: 4px solid #4a9a4a;
-      border-radius: 0 6px 6px 0; padding: .8em 1em; margin: .5em 0 1em;
-    }
-    .challenge p, .solution p { margin: 0; font-size: .82em; }
+    .chal { border-left:4px solid var(--red);  background:#1e1010; }
+    .sol  { border-left:4px solid #4a9a4a;     background:#0f1a0f; }
+    .chal p, .sol p { margin:0; font-size:.8em; }
     .tag {
-      display: inline-block; background: var(--red); color: #fff;
-      border-radius: 4px; padding: .1em .55em; font-size: .65em;
-      text-transform: uppercase; letter-spacing: .08em; margin-right: .4em;
+      display:inline-block; border-radius:3px; padding:.1em .5em;
+      font-size:.65em; text-transform:uppercase; letter-spacing:.08em; margin-right:.5em;
+      vertical-align:middle;
     }
-    .tag.green { background: #3a7a3a; }
+    .tag-red   { background:var(--red);  color:#fff; }
+    .tag-green { background:#3a7a3a;     color:#fff; }
 
-    /* ── Title slide ─────────────────────────────── */
-    #title-slide { text-align: center; }
-    #title-slide .subtitle { color: var(--stone); font-size: .9em; margin-top: .5em; }
-    .torch-row { font-size: 2em; letter-spacing: .5em; opacity: .6; margin: .5em 0; }
-    .names { color: var(--dim); font-size: .78em; margin-top: 2em; letter-spacing: .12em; text-transform: uppercase; }
+    /* ── Timeline ─── */
+    .tl { list-style:none; border-left:2px solid var(--dim); padding-left:1.4em; margin-top:.5em; }
+    .tl li { position:relative; margin-bottom:.7em; }
+    .tl li::before {
+      content:''; width:10px; height:10px; border-radius:50%;
+      background:var(--gold); position:absolute; left:-1.75em; top:.35em;
+    }
+    .tl .lbl { color:var(--gold); font-weight:bold; font-size:.82em; }
+    .tl .desc { color:var(--body); font-size:.8em; }
 
-    /* ── Demo slide ──────────────────────────────── */
+    /* ── Next-steps grid ─── */
+    .next { display:grid; grid-template-columns:1fr 1fr; gap:.8em; margin-top:.6em; }
+    .next-item { background:var(--card); border:1px solid var(--dim); border-radius:6px; padding:.7em .9em; }
+    .next-item .n { color:var(--gold); font-size:1.3em; font-weight:bold; }
+    .next-item p  { margin:0; font-size:.78em; color:var(--body); }
+
+    /* ── Title slide ─── */
+    .title-wrap { text-align:center; padding-top:.8em; }
+    .torches    { font-size:2.2em; letter-spacing:.6em; opacity:.55; margin-bottom:.4em; }
+    .subtitle   { color:var(--stone); font-size:.9em; margin-top:.4em; }
+    .names      { color:var(--dim); font-size:.7em; margin-top:2.2em; letter-spacing:.1em; text-transform:uppercase; }
+
+    /* ── Demo ─── */
     .demo-box {
-      border: 2px dashed var(--dim); border-radius: 8px;
-      padding: 2.5em; text-align: center; color: var(--dim);
-      font-size: 1.1em; margin: 1em auto; max-width: 600px;
+      border:2px dashed var(--dim); border-radius:10px;
+      padding:2em; text-align:center; max-width:580px; margin:1em auto 0;
     }
-    .demo-box span { font-size: 3em; display: block; margin-bottom: .3em; }
+    .demo-box .big { font-size:3em; display:block; margin-bottom:.3em; }
+    .demo-box p { font-size:.85em; color:var(--stone); }
 
-    /* ── Next steps ──────────────────────────────── */
-    .next-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .9em; }
-    .next-item {
-      background: var(--card); border: 1px solid var(--dim);
-      border-radius: 6px; padding: .8em 1em;
-    }
-    .next-item .num { color: var(--gold); font-size: 1.4em; font-weight: bold; float: left; margin-right: .4em; line-height: 1; }
-    .next-item p { margin: 0; font-size: .8em; }
+    /* ── Q&A ─── */
+    .qa-wrap { text-align:center; padding-top:.6em; }
+    .qa-stats { display:flex; justify-content:center; gap:1.2em; margin-top:1.4em; flex-wrap:wrap; }
+    .qa-stat  { background:var(--card); border:1px solid var(--dim); border-radius:6px;
+                padding:.6em 1.2em; text-align:center; }
+    .qa-stat strong { color:var(--gold); display:block; font-size:1.2em; }
+    .qa-stat span   { color:var(--stone); font-size:.7em; }
 
-    /* ── Progress bar at bottom ──────────────────── */
-    .reveal .progress { color: var(--gold); }
-
-    /* ── Fragment tweaks ─────────────────────────── */
-    .reveal .fragment { transition: all .35s ease; }
+    /* ── Slide numbers ─── */
+    .reveal .slide-number { color:var(--dim); background:transparent; font-size:.6em; }
+    .reveal .progress bar, .reveal .progress { background:var(--gold); }
   </style>
 </head>
-
 <body>
 <div class="reveal">
 <div class="slides">
 
-<!-- ══════════════════════════════════════════════
-     SLIDE 1 — Title
-════════════════════════════════════════════════ -->
-<section id="title-slide" data-background-gradient="radial-gradient(ellipse at center, #1a0f05 0%, #0d0b08 70%)">
-  <div class="torch-row">🕯 &nbsp; 🕯</div>
-  <h1>THE ABYSS</h1>
-  <p class="subtitle">A Procedurally Generated Dungeon Crawler</p>
-  <hr style="border-color:#3a2e20; margin: 1.2em auto; width: 40%;">
-  <p style="color:#8a7a62; font-size:.82em;">Python Final Project &nbsp;·&nbsp; 2025–26</p>
-  <p class="names">Group members: &nbsp; _________________ &nbsp; _________________ &nbsp; _________________</p>
+
+<!-- ═══ 1 TITLE ═══════════════════════════════════════════════════════════════ -->
+<section data-transition="zoom">
+  <div class="title-wrap">
+    <div class="torches">🕯 🕯</div>
+    <h1>THE ABYSS</h1>
+    <p class="subtitle">A Procedurally Generated Dungeon Crawler</p>
+    <hr class="rule" style="width:35%; margin:.9em auto;">
+    <p style="color:#8a7a62; font-size:.75em;">Python Final Project &nbsp;·&nbsp; 2025–26</p>
+    <p class="names">Group members: &nbsp; _________________ &nbsp; _________________ &nbsp; _________________</p>
+  </div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════
-     SLIDE 2 — What Is It?
-════════════════════════════════════════════════ -->
-<section>
-  <h2>What Is The Abyss?</h2>
-  <p style="font-size:.88em; max-width:700px; margin: .5em auto 1.2em;">
-    A top-down dungeon crawler where <strong>every floor is uniquely generated</strong> —
-    no two playthroughs are the same. Navigate torch-lit halls, fight monsters,
-    collect loot, and descend as deep as you dare.
-  </p>
+<!-- ═══ 2 WHAT IS IT ══════════════════════════════════════════════════════════ -->
+<section data-transition="slide">
+  <h2>What is The Abyss?</h2>
+  <p>A top-down dungeon crawler where <strong>every floor is randomly generated</strong> — no two playthroughs are ever the same.</p>
 
-  <div class="cards">
-    <div class="card fragment">
+  <div class="cards" style="margin-top:.9em;">
+    <div class="card fragment fade-up">
       <span class="icon">🗺️</span>
       <h3>Procedural Maps</h3>
-      <p>Random rooms carved out of solid rock, connected by hand-dug corridors</p>
+      <p>Rooms and corridors are carved randomly each time you play</p>
     </div>
-    <div class="card fragment">
+    <div class="card fragment fade-up">
       <span class="icon">👹</span>
       <h3>3 Enemy Types</h3>
-      <p>Goblins, Skeletons & Demons — each with unique stats and hunting behaviour</p>
+      <p>Goblins, Skeletons and Demons — each with unique stats</p>
     </div>
-    <div class="card fragment">
+    <div class="card fragment fade-up">
       <span class="icon">🕯️</span>
       <h3>Torch Lighting</h3>
-      <p>Radial light mask limits your field of view — darkness hides what lurks ahead</p>
+      <p>You can only see what your torch reveals — darkness hides danger</p>
     </div>
-    <div class="card fragment">
-      <span class="icon">📜</span>
-      <h3>Infinite Floors</h3>
-      <p>Enemies scale with depth — floor 1 is manageable, floor 10 is brutal</p>
+    <div class="card fragment fade-up">
+      <span class="icon">📈</span>
+      <h3>Gets Harder</h3>
+      <p>Enemies gain HP and spawn in larger groups on deeper floors</p>
     </div>
   </div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════
-     SLIDE 3 — Why This Project?
-════════════════════════════════════════════════ -->
-<section>
-  <h2>Why This Project?</h2>
-
-  <ul class="timeline" style="margin-top:1.2em;">
+<!-- ═══ 3 WHY THIS PROJECT ════════════════════════════════════════════════════ -->
+<section data-transition="slide">
+  <h2>Why Did We Choose This?</h2>
+  <ul class="tl">
     <li class="fragment">
-      <span class="label">The Challenge</span>
-      <span class="desc">We wanted to build something that felt genuinely impressive — not a simple script, but a real interactive experience</span>
+      <div class="lbl">We wanted something impressive</div>
+      <div class="desc">Not a simple script — a real game people would actually want to play</div>
     </li>
     <li class="fragment">
-      <span class="label">The Idea</span>
-      <span class="desc">Dungeon crawlers are a classic genre — but <em>procedural generation</em> makes every run different, which is a genuinely hard computer science problem</span>
+      <div class="lbl">Games test every Python skill at once</div>
+      <div class="desc">Graphics, logic, data structures, real-time loops — all in one project</div>
     </li>
     <li class="fragment">
-      <span class="label">The Appeal</span>
-      <span class="desc">Games are the perfect test of Python skills — graphics, algorithms, data structures, and real-time logic all in one project</span>
+      <div class="lbl">Procedural generation is a real CS problem</div>
+      <div class="desc">Used in commercial games like <em>Minecraft</em>, <em>Binding of Isaac</em> and <em>Spelunky</em></div>
     </li>
     <li class="fragment">
-      <span class="label">The Result</span>
-      <span class="desc">~1,000 lines of documented Python: procedural generation, BFS pathfinding, ray-marching line-of-sight, and torch lighting — all from scratch</span>
+      <div class="lbl">The result</div>
+      <div class="desc">~1,000 lines of Python — built entirely from scratch with no game engine</div>
     </li>
   </ul>
 </section>
 
 
-<!-- ══════════════════════════════════════════════
-     SLIDE 4 — Architecture Overview
-════════════════════════════════════════════════ -->
-<section>
+<!-- ═══ 4 HOW IT WORKS ════════════════════════════════════════════════════════ -->
+<section data-transition="slide">
   <h2>How It Works</h2>
-  <h3 style="margin-bottom:.8em;">Three core systems</h3>
-
   <div class="cards">
-    <div class="card fragment">
+    <div class="card fragment fade-right">
       <span class="icon">🏗️</span>
-      <h3>1 · Generation</h3>
-      <p>Random rooms placed on a grid → L-shaped corridors carved between them → enemies and items scattered through rooms</p>
+      <h3>Step 1 — Build the Map</h3>
+      <p>Start with solid rock. Punch in random rooms. Dig corridors to connect them. Place enemies and loot.</p>
     </div>
-    <div class="card fragment">
+    <div class="card fragment fade-right">
       <span class="icon">🧠</span>
-      <h3>2 · Enemy AI</h3>
-      <p>BFS shortest-path finds routes through walls → ray-marching checks line of sight → enemies hunt only when they can <em>see</em> you</p>
+      <h3>Step 2 — Enemy AI</h3>
+      <p>Enemies patrol until they spot you. Then they calculate the shortest path around walls and give chase.</p>
     </div>
-    <div class="card fragment">
+    <div class="card fragment fade-right">
       <span class="icon">🎨</span>
-      <h3>3 · Rendering</h3>
-      <p>Camera tracks player → tiles drawn with depth-based darkening → torch mask multiplied over the entire frame each tick</p>
+      <h3>Step 3 — Render</h3>
+      <p>Camera follows the player. Torch light is drawn over the whole screen every frame.</p>
     </div>
   </div>
-
-  <p class="fragment" style="font-size:.78em; color:var(--dim); margin-top:1em;">
-    All three systems run inside a single 60 FPS game loop — events → logic → render → display
+  <p class="fragment" style="margin-top:.9em; color:var(--dim); font-size:.8em;">
+    All of this runs 60 times per second inside a single game loop
   </p>
 </section>
 
 
-<!-- ══════════════════════════════════════════════
-     SLIDE 5 — Procedural Generation
-════════════════════════════════════════════════ -->
-<section>
+<!-- ═══ 5 PROCEDURAL GENERATION ══════════════════════════════════════════════ -->
+<section data-transition="convex">
   <h2>Procedural Generation</h2>
-  <p style="font-size:.82em; margin-bottom:.8em;">
-    The map starts as solid <strong>wall tiles</strong>. Rooms are punched in at random,
-    then connected by corridors — guaranteeing every room is reachable.
-  </p>
-
-  <div style="display:flex; gap:1.2em; align-items:flex-start;">
-    <pre style="flex:1.1"><code class="language-python" data-trim>
-def generate_dungeon(floor_num):
-    """Procedurally build a floor — rooms, corridors,
-    enemies, and items all in one pass."""
-
-    tiles = [[WALL] * MAP_W for _ in range(MAP_H)]
-    rooms = []
-
-    # Place up to 16 non-overlapping rooms
-    for _ in range(400):
-        rw = random.randint(4, 12)
-        rh = random.randint(4, 8)
-        rx = random.randint(1, MAP_W - rw - 1)
-        ry = random.randint(1, MAP_H - rh - 1)
-
-        # Skip if it overlaps an existing room
-        if any(rx < r['x']+r['w']+1 and ...
-               for r in rooms):
-            continue
-
-        rooms.append({'x':rx,'y':ry,'w':rw,'h':rh})
-        for ty in range(ry, ry + rh):
-            for tx in range(rx, rx + rw):
-                tiles[ty][tx] = FLOOR   # carve room
-    </code></pre>
-
-    <div style="flex:.9; font-size:.78em;">
-      <div class="card fragment" style="margin-bottom:.7em;">
-        <h3>Step 1 — Rooms</h3>
-        <p>Try 400 random placements. Accept if no overlap. Stop at 16 rooms.</p>
-      </div>
-      <div class="card fragment" style="margin-bottom:.7em;">
-        <h3>Step 2 — Corridors</h3>
-        <p>Sort rooms left→right. Carve 2-tile-wide L-shaped paths between each adjacent pair.</p>
-      </div>
-      <div class="card fragment">
-        <h3>Step 3 — Populate</h3>
-        <p>Place player in room[0], stairs in last room, enemies and loot in all rooms between.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ══════════════════════════════════════════════
-     SLIDE 6 — Enemy AI
-════════════════════════════════════════════════ -->
-<section>
-  <h2>Enemy AI</h2>
-  <p style="font-size:.82em; margin-bottom:.8em;">
-    Enemies aren't telepathic — they can only chase you if they have <strong>line of sight</strong>.
-    Once they see you, BFS finds the shortest walkable path.
-  </p>
-
-  <div style="display:flex; gap:1.2em;">
-    <pre style="flex:1"><code class="language-python" data-trim>
-def bfs_path(tiles, start, goal, max_dist=28):
-    """Breadth-first search through non-wall tiles.
-    Returns the shortest path as a list of coords."""
-
-    q       = deque([(sx, sy, [])])
-    visited = {(sx, sy)}
-
-    while q:
-        x, y, path = q.popleft()
-        for dx, dy in ((1,0),(-1,0),(0,1),(0,-1)):
-            nx, ny = x+dx, y+dy
-            if tiles[ny][nx] == WALL: continue
-            if nx == gx and ny == gy:
-                return path + [(nx, ny)]  # found!
-            q.append((nx, ny, path+[(nx,ny)]))
-    return []   # unreachable
-    </code></pre>
-
-    <pre style="flex:1"><code class="language-python" data-trim>
-def has_los(tiles, ax, ay, bx, by):
-    """Ray-march from A to B. Return False
-    if any wall tile intersects the line."""
-
-    dist  = math.hypot(bx-ax, by-ay)
-    steps = max(2, int(dist * 3))
-
-    for i in range(steps + 1):
-        t  = i / steps
-        tx = int(ax + (bx - ax) * t)
-        ty = int(ay + (by - ay) * t)
-        if tiles[ty][tx] == WALL:
-            return False   # blocked
-    return True            # clear
-    </code></pre>
-  </div>
-
-  <p class="fragment" style="font-size:.77em; color:var(--dim); margin-top:.6em;">
-    BFS is recalculated every 0.48 s per enemy — cheaper than every frame, still feels reactive
-  </p>
-</section>
-
-
-<!-- ══════════════════════════════════════════════
-     SLIDE 7 — Data Structures
-════════════════════════════════════════════════ -->
-<section>
-  <h2>Data Structures</h2>
-  <h3 style="margin-bottom:.9em;">Lists and Dicts doing the heavy lifting</h3>
+  <p style="margin-bottom:.7em;">The map is different every single time. Here's how it's built:</p>
 
   <div class="cards">
-
     <div class="card fragment">
-      <h3>🗂️ Tile Grid</h3>
-      <p><code style="color:var(--gold)">list[list[int]]</code></p>
-      <p style="font-size:.8em; margin-top:.4em;">54 × 42 grid — each cell is <code>WALL=0</code>, <code>FLOOR=1</code>, or <code>STAIRS=2</code>. O(1) lookup by tile coordinate.</p>
+      <h3>1 · Place Rooms</h3>
+      <p>Try 400 random positions. If a room doesn't overlap anything already there, keep it. Repeat up to 16 rooms.</p>
     </div>
-
     <div class="card fragment">
-      <h3>👤 Player State</h3>
-      <p><code style="color:var(--gold)">dict</code></p>
-      <p style="font-size:.8em; margin-top:.4em;"><code>x, y, hp, max_hp, facing, atk_t, atk_cd, inv_t, alive</code> — everything about the player in one place</p>
+      <h3>2 · Dig Corridors</h3>
+      <p>Sort the rooms left to right. Carve an L-shaped tunnel between each pair — so every room is reachable.</p>
     </div>
-
     <div class="card fragment">
-      <h3>👹 Enemy List</h3>
-      <p><code style="color:var(--gold)">list[dict]</code></p>
-      <p style="font-size:.8em; margin-top:.4em;">Each enemy is a dict with its own <code>type, hp, path, state, facing</code>. Looped each frame for AI, rendering, and combat.</p>
+      <h3>3 · Populate</h3>
+      <p>Player starts in room 1. Stairs down are in the last room. Enemies and items fill all rooms in between.</p>
     </div>
-
-    <div class="card fragment">
-      <h3>✨ Particles</h3>
-      <p><code style="color:var(--gold)">list[dict]</code></p>
-      <p style="font-size:.8em; margin-top:.4em;">Kill and pickup effects — each particle stores <code>x, y, vx, vy, life, col, size</code>. Removed when <code>life ≤ 0</code>.</p>
-    </div>
-
   </div>
+
+  <p class="fragment" style="margin-top:.8em; font-size:.78em; color:var(--stone);">
+    Uses a <strong>2D list of integers</strong> — 0 = wall, 1 = floor, 2 = stairs — the core data structure of the entire game
+  </p>
 </section>
 
 
-<!-- ══════════════════════════════════════════════
-     SLIDE 8 — Challenges & Solutions
-════════════════════════════════════════════════ -->
-<section>
-  <h2>Challenges &amp; Solutions</h2>
+<!-- ═══ 6 ENEMY AI ════════════════════════════════════════════════════════════ -->
+<section data-transition="convex">
+  <h2>Enemy AI</h2>
+  <p style="margin-bottom:.8em;">Enemies aren't mindless — they can only chase you if they can actually <strong>see you</strong>.</p>
 
-  <div class="challenge fragment">
-    <p><span class="tag">Challenge</span> <strong>Black square around the player</strong> — the torch light mask was a fixed-size surface blitted directly onto the game, leaving visible dark corners outside the circle</p>
-  </div>
-  <div class="solution fragment">
-    <p><span class="tag green">Fix</span> Fill a <em>full-screen</em> black surface, blit the white radial gradient onto it at the player's position, then multiply it over the entire frame using <code>BLEND_RGB_MULT</code></p>
-  </div>
-
-  <div class="challenge fragment">
-    <p><span class="tag">Challenge</span> <strong>Wall collision misalignment</strong> — player's physics position was at the tile's top-left corner, but the sprite was rendered half a tile ahead, causing visual overlap into walls</p>
-  </div>
-  <div class="solution fragment">
-    <p><span class="tag green">Fix</span> Spawn all entities at <code>tile + 0.5</code> so their physics position <em>is</em> their visual centre — removed all the manual offset adjustments</p>
-  </div>
-
-  <div class="challenge fragment">
-    <p><span class="tag">Challenge</span> <strong>Enemy pathfinding performance</strong> — running BFS for every enemy every single frame would freeze the game on busy floors</p>
-  </div>
-  <div class="solution fragment">
-    <p><span class="tag green">Fix</span> Cache each enemy's path and only recompute it every 0.48 seconds — still feels responsive but costs ~8% of the CPU time</p>
-  </div>
-</section>
-
-
-<!-- ══════════════════════════════════════════════
-     SLIDE 9 — Live Demo
-════════════════════════════════════════════════ -->
-<section data-background-gradient="radial-gradient(ellipse at center, #1a0a05 0%, #0d0b08 80%)">
-  <h2>Live Demo</h2>
-  <div class="demo-box">
-    <span>⚔️</span>
-    <p>Time to descend into <strong>The Abyss</strong></p>
-    <p style="font-size:.78em; margin-top:.8em; color:var(--dim);">
-      WASD / Arrows &nbsp;—&nbsp; move<br>
-      SPACE &nbsp;—&nbsp; attack &nbsp;&nbsp;|&nbsp;&nbsp; P &nbsp;—&nbsp; pause
-    </p>
-  </div>
-
-  <div class="cards" style="margin-top:1em;">
-    <div class="card" style="text-align:center;">
+  <div class="cards">
+    <div class="card fragment">
+      <span class="icon">👁️</span>
+      <h3>Line of Sight</h3>
+      <p>We draw an invisible line from the enemy to the player. If a wall crosses it — the enemy can't see you and stays idle.</p>
+    </div>
+    <div class="card fragment">
       <span class="icon">🗺️</span>
-      <p style="font-size:.78em;">Every floor is<br><strong>procedurally generated</strong></p>
+      <h3>Pathfinding (BFS)</h3>
+      <p>Once spotted, the enemy runs a <strong>Breadth-First Search</strong> — the same algorithm used in GPS and robot navigation — to find the shortest route around walls.</p>
     </div>
-    <div class="card" style="text-align:center;">
-      <span class="icon">🧠</span>
-      <p style="font-size:.78em;">Enemies use<br><strong>BFS pathfinding</strong></p>
-    </div>
-    <div class="card" style="text-align:center;">
-      <span class="icon">🔦</span>
-      <p style="font-size:.78em;">Torch lighting<br><strong>limits your sight</strong></p>
-    </div>
-    <div class="card" style="text-align:center;">
-      <span class="icon">📈</span>
-      <p style="font-size:.78em;">Difficulty<br><strong>scales per floor</strong></p>
+    <div class="card fragment">
+      <span class="icon">⚡</span>
+      <h3>Performance</h3>
+      <p>Recalculating paths every frame would be too slow. Instead we cache the path and only recalculate every 0.48 seconds.</p>
     </div>
   </div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════
-     SLIDE 10 — Next Steps
-════════════════════════════════════════════════ -->
-<section>
-  <h2>Next Steps</h2>
-  <p style="font-size:.82em; margin-bottom:1em;">The Abyss is solid — but here's where it could go next</p>
+<!-- ═══ 7 DATA STRUCTURES ═════════════════════════════════════════════════════ -->
+<section data-transition="slide">
+  <h2>Data Structures</h2>
 
-  <div class="next-grid">
-    <div class="next-item fragment">
-      <span class="num">01</span>
-      <p><strong>Weapons & Inventory</strong><br>Different sword types, bows, consumables — let the player build a loadout</p>
+  <div class="cards">
+    <div class="card fragment">
+      <h3>📋 Lists of Lists</h3>
+      <p>The whole map is stored as a 54×42 grid — a list where each row is another list of numbers. Fast to look up any tile by its x/y position.</p>
     </div>
-    <div class="next-item fragment">
-      <span class="num">02</span>
-      <p><strong>Boss Enemies</strong><br>One oversized enemy per 5th floor with custom attack patterns and a health phase</p>
+    <div class="card fragment">
+      <h3>📦 Dictionaries</h3>
+      <p>Every enemy is a dictionary: <strong>hp, speed, position, path, state</strong>. All 20+ enemies live in one list of dicts — easy to loop, update, and render.</p>
     </div>
-    <div class="next-item fragment">
-      <span class="num">03</span>
-      <p><strong>Sound Effects</strong><br>Sword swings, enemy growls, torch crackle — audio makes the atmosphere complete</p>
+  </div>
+
+  <div class="cards" style="margin-top:.9em;">
+    <div class="card fragment">
+      <h3>👤 Player Dict</h3>
+      <p>One dictionary holds everything about the player: position, health, attack timer, facing direction, alive/dead.</p>
     </div>
-    <div class="next-item fragment">
-      <span class="num">04</span>
-      <p><strong>Saved High Scores</strong><br>Persist best floor and gold to a JSON file so records survive between sessions</p>
-    </div>
-    <div class="next-item fragment">
-      <span class="num">05</span>
-      <p><strong>Traps & Secrets</strong><br>Hidden rooms, spike traps, locked doors — reward exploration</p>
-    </div>
-    <div class="next-item fragment">
-      <span class="num">06</span>
-      <p><strong>vs. Commercial Games</strong><br>Similar concept to <em>Enter the Gungeon</em> / <em>The Binding of Isaac</em> — ours is simpler but fully hand-coded from scratch</p>
+    <div class="card fragment">
+      <h3>✨ Particle List</h3>
+      <p>Kill effects and pickup sparks each live as a dict in a list. Removed automatically when their lifetime runs out.</p>
     </div>
   </div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════
-     SLIDE 11 — Q&A
-════════════════════════════════════════════════ -->
-<section data-background-gradient="radial-gradient(ellipse at center, #1a0f05 0%, #0d0b08 70%)">
-  <div style="text-align:center; padding-top:1em;">
-    <div class="torch-row">🕯 &nbsp; 🕯</div>
-    <h1 style="font-size:2.4em;">Questions?</h1>
-    <p style="color:var(--stone); font-size:.9em; margin-top:.5em;">
-      We built every line from scratch in Python using pygame
+<!-- ═══ 8 CHALLENGES ══════════════════════════════════════════════════════════ -->
+<section data-transition="slide">
+  <h2>Challenges &amp; How We Fixed Them</h2>
+
+  <div class="fragment">
+    <div class="chal"><p><span class="tag tag-red">Problem</span> <strong>Black square</strong> around the player — the torch light only darkened a small rectangle instead of the whole screen</p></div>
+    <div class="sol" style="margin-bottom:.8em;"><p><span class="tag tag-green">Fixed</span> Fill the <em>entire screen</em> black, draw the light circle on it, then multiply over the whole frame</p></div>
+  </div>
+
+  <div class="fragment">
+    <div class="chal"><p><span class="tag tag-red">Problem</span> <strong>Wall misalignment</strong> — the player could visually walk into walls because physics and visuals used different positions</p></div>
+    <div class="sol" style="margin-bottom:.8em;"><p><span class="tag tag-green">Fixed</span> Spawn everything at <em>tile + 0.5</em> so the physics position is always the visual centre</p></div>
+  </div>
+
+  <div class="fragment">
+    <div class="chal"><p><span class="tag tag-red">Problem</span> <strong>Performance</strong> — running pathfinding for every enemy every frame caused the game to stutter</p></div>
+    <div class="sol"><p><span class="tag tag-green">Fixed</span> Cache the path and only recalculate it every 0.48 s — 97% cheaper, still feels instant</p></div>
+  </div>
+</section>
+
+
+<!-- ═══ 9 DEMO ════════════════════════════════════════════════════════════════ -->
+<section data-transition="zoom" data-background-gradient="radial-gradient(ellipse at center, #1a0a05 0%, #0d0b08 80%)">
+  <h2 style="text-align:center;">Live Demo ⚔️</h2>
+  <div class="demo-box">
+    <span class="big">🎮</span>
+    <p style="font-size:1em; color:var(--body); margin-bottom:.8em;">Time to descend into <strong>The Abyss</strong></p>
+    <hr class="rule">
+    <p style="margin-top:.6em;">
+      <strong>WASD</strong> / Arrows — Move &nbsp;|&nbsp;
+      <strong>SPACE</strong> — Attack &nbsp;|&nbsp;
+      <strong>P</strong> — Pause
     </p>
-    <hr style="border-color:#3a2e20; margin: 1.2em auto; width: 35%;">
-    <div class="cards" style="max-width:680px; margin:1.2em auto 0;">
-      <div class="card" style="text-align:center; font-size:.82em;">
-        <strong>Language</strong><br>Python 3
-      </div>
-      <div class="card" style="text-align:center; font-size:.82em;">
-        <strong>Library</strong><br>pygame-ce
-      </div>
-      <div class="card" style="text-align:center; font-size:.82em;">
-        <strong>Algorithm</strong><br>BFS + Ray-march
-      </div>
-      <div class="card" style="text-align:center; font-size:.82em;">
-        <strong>Code</strong><br>~1,000 lines
-      </div>
+  </div>
+</section>
+
+
+<!-- ═══ 10 NEXT STEPS ════════════════════════════════════════════════════════ -->
+<section data-transition="slide">
+  <h2>What Could Come Next?</h2>
+  <div class="next">
+    <div class="next-item fragment fade-up">
+      <div class="n">01</div>
+      <p><strong>Weapons & Inventory</strong> — swords, bows, potions the player can choose between</p>
     </div>
-    <p style="color:var(--dim); font-size:.72em; margin-top:1.5em;">
+    <div class="next-item fragment fade-up">
+      <div class="n">02</div>
+      <p><strong>Boss Enemies</strong> — a powerful enemy every 5 floors with special attack patterns</p>
+    </div>
+    <div class="next-item fragment fade-up">
+      <div class="n">03</div>
+      <p><strong>Sound Effects</strong> — sword swings, growls, and torch crackle to complete the atmosphere</p>
+    </div>
+    <div class="next-item fragment fade-up">
+      <div class="n">04</div>
+      <p><strong>Traps & Secrets</strong> — spike floors, hidden rooms, locked doors to reward exploration</p>
+    </div>
+  </div>
+  <p class="fragment" style="margin-top:.9em; font-size:.78em; color:var(--dim);">
+    Similar concept to <em>Enter the Gungeon</em> and <em>The Binding of Isaac</em> — but ours is written entirely from scratch in Python
+  </p>
+</section>
+
+
+<!-- ═══ 11 Q&A ════════════════════════════════════════════════════════════════ -->
+<section data-transition="zoom" data-background-gradient="radial-gradient(ellipse at center, #1a0f05 0%, #0d0b08 70%)">
+  <div class="qa-wrap">
+    <div class="torches">🕯 🕯</div>
+    <h1>Questions?</h1>
+    <p style="color:var(--stone); margin-top:.5em;">Built entirely from scratch — Python, pygame, no game engine</p>
+    <hr class="rule" style="width:30%; margin:.9em auto;">
+    <div class="qa-stats">
+      <div class="qa-stat"><strong>Python 3</strong><span>Language</span></div>
+      <div class="qa-stat"><strong>pygame-ce</strong><span>Library</span></div>
+      <div class="qa-stat"><strong>BFS + Ray-march</strong><span>Algorithms</span></div>
+      <div class="qa-stat"><strong>~1,000 lines</strong><span>of code</span></div>
+    </div>
+    <p style="color:var(--dim); font-size:.65em; margin-top:1.4em;">
       github.com/ethanblairs2006-stack/the-abyss
     </p>
   </div>
 </section>
 
 
-</div><!-- /slides -->
-</div><!-- /reveal -->
+</div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
 <script>
   Reveal.initialize({
     hash: true,
-    transition: 'fade',
-    transitionSpeed: 'slow',
+    width: '100%',
+    height: '100%',
+    margin: 0,
+    minScale: 1,
+    maxScale: 1,
+    transition: 'slide',
+    transitionSpeed: 'default',
     backgroundTransition: 'fade',
     progress: true,
-    slideNumber: true,
-    plugins: [ RevealHighlight, RevealNotes ],
-    highlight: { highlightOnLoad: true },
+    slideNumber: 'c/t',
+    center: true,
   });
 </script>
 </body>

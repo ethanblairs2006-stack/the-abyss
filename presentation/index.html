@@ -73,11 +73,11 @@
 
     /* ── Challenge / Solution ─── */
     .chal, .sol {
-      border-radius:0 6px 6px 0; padding:.65em 1em; margin-bottom:.4em;
+      border-radius:0 6px 6px 0; padding:.38em .85em; margin-bottom:.22em;
     }
     .chal { border-left:4px solid var(--red);  background:#1e1010; }
     .sol  { border-left:4px solid #4a9a4a;     background:#0f1a0f; }
-    .chal p, .sol p { margin:0; font-size:.8em; }
+    .chal p, .sol p { margin:0; font-size:.72em; line-height:1.5; }
     .tag {
       display:inline-block; border-radius:3px; padding:.1em .5em;
       font-size:.65em; text-transform:uppercase; letter-spacing:.08em; margin-right:.5em;
@@ -312,12 +312,12 @@
 
   <div class="fragment">
     <div class="chal"><p><span class="tag tag-red">Problem</span> <strong>Black square</strong> around the player — the torch light only darkened a small rectangle instead of the whole screen</p></div>
-    <div class="sol" style="margin-bottom:.8em;"><p><span class="tag tag-green">Fixed</span> Fill the <em>entire screen</em> black, draw the light circle on it, then multiply over the whole frame</p></div>
+    <div class="sol" style="margin-bottom:.5em;"><p><span class="tag tag-green">Fixed</span> Fill the <em>entire screen</em> black, draw the light circle on it, then multiply over the whole frame</p></div>
   </div>
 
   <div class="fragment">
     <div class="chal"><p><span class="tag tag-red">Problem</span> <strong>Wall misalignment</strong> — the player could visually walk into walls because physics and visuals used different positions</p></div>
-    <div class="sol" style="margin-bottom:.8em;"><p><span class="tag tag-green">Fixed</span> Spawn everything at <em>tile + 0.5</em> so the physics position is always the visual centre</p></div>
+    <div class="sol" style="margin-bottom:.5em;"><p><span class="tag tag-green">Fixed</span> Spawn everything at <em>tile + 0.5</em> so the physics position is always the visual centre</p></div>
   </div>
 
   <div class="fragment">
@@ -338,6 +338,18 @@
       <strong>WASD</strong> / Arrows — Move &nbsp;|&nbsp;
       <strong>SPACE</strong> — Attack &nbsp;|&nbsp;
       <strong>P</strong> — Pause
+    </p>
+    <p style="margin-top:1em;">
+      <a href="../launch_game.command"
+         style="display:inline-block; background:#c42c2c; color:#fff; text-decoration:none;
+                padding:.5em 1.4em; border-radius:6px; font-size:.9em; letter-spacing:.06em;
+                border:1px solid #e04040;"
+         onclick="this.blur()">
+        ⚔️ &nbsp; Launch Game
+      </a>
+      <span style="color:var(--dim); font-size:.7em; display:block; margin-top:.5em;">
+        or press <strong style="color:var(--stone);">⌘ + Tab</strong> if the game is already open
+      </span>
     </p>
   </div>
 </section>
